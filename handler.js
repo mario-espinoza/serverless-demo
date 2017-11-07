@@ -89,17 +89,50 @@ const resultsProcessor = (event) => new Promise((resolve, reject) => {
 	});
 });
 
+const scoreProcessor = (event) => new Promise((resolve, reject) => {
+	
+	let players = getPlayers(event);
+	
+
+	if (!players) {
+		return reject('missing parameters');
+	}
+
+	let scorer = event.pathParameters.player;
+
+	let filter = {
+		players : {
+			$in : players
+		}
+	};
+
+	let goal = {
+		scorer : scorer,
+	};
+
+	let update = { $push : {
+		'goals' : goal
+	}};
+	
+	cachedDb.collection('matches').findOneAndUpdate(filter, update, (err, result) => {
+		if (err) {
+			return reject(err);
+		}
+		resolve(result);
+	});
+});
+
 const processors = {
 	start: startProcessor,
-	score: '',
+	score: scoreProcessor,
 	results: resultsProcessor
 };
 
 const endpoints = {
 	hello: '/hello',
-	start: '/start/{myPlayer}/{enemy}',
-	score: '/score/{myPlayer}/{enemy}',
-	results: '/results/{myPlayer}/{enemy}',
+	start: '/start/{player}/{enemy}',
+	score: '/score/{player}/{enemy}',
+	results: '/results/{player}/{enemy}',
 };
 
 const getProcessor = (event) => {
@@ -129,13 +162,14 @@ const errorHandler = cb => err => {
 function processEvent(event, context, callback) {
 
 	let processor = getProcessor(event);
+	console.log('here');
 
 	if (!processor) {
 		return errorHandler(callback)('invalid endpoint');
 	}
 
 	connectToDatabase(atlas_connection_uri)
-		.then(db => db && processor(event)())
+		.then(db => db && processor(event))
 		.then(result => {
 			console.log('query results: ', result);
 			callback(null, result);

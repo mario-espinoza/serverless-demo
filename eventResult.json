@@ -1,0 +1,58 @@
+{
+    "resource": "/results/{player}/{enemy}",
+    "path": "/hello/a/b",
+    "httpMethod": "GET",
+    "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Language": "en,es-419;q=0.8,es;q=0.6,en-US;q=0.4",
+      "CloudFront-Forwarded-Proto": "https",
+      "CloudFront-Is-Desktop-Viewer": "true",
+      "CloudFront-Is-Mobile-Viewer": "false",
+      "CloudFront-Is-SmartTV-Viewer": "false",
+      "CloudFront-Is-Tablet-Viewer": "false",
+      "CloudFront-Viewer-Country": "CL",
+      "dnt": "1",
+      "Host": "6x5a7qcve7.execute-api.us-west-1.amazonaws.com",
+      "upgrade-insecure-requests": "1",
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36",
+      "Via": "2.0 be46e64dfacc52936b3bdad666468ce7.cloudfront.net (CloudFront)",
+      "X-Amz-Cf-Id": "RJ9o1mIGds3zBBma0dvqKhBmjg0M40R1DhYqwodmWd7I4SsWMG5ilw==",
+      "X-Amzn-Trace-Id": "Root=1-5a022d50-0e5f5d1d699a340756b9a689",
+      "X-Forwarded-For": "191.116.78.107, 54.239.140.83",
+      "X-Forwarded-Port": "443",
+      "X-Forwarded-Proto": "https"
+    },
+    "queryStringParameters": null,
+    "pathParameters": {
+		"player": "a",
+		"enemy": "b"
+	},
+    "stageVariables": null,
+    "requestContext": {
+      "path": "/dev/hello",
+      "accountId": "037333819718",
+      "resourceId": "k9k32k",
+      "stage": "dev",
+      "requestId": "42b320b6-c407-11e7-a46c-0d10f19e4218",
+      "identity": {
+        "cognitoIdentityPoolId": null,
+        "accountId": null,
+        "cognitoIdentityId": null,
+        "caller": null,
+        "apiKey": "",
+        "sourceIp": "191.116.78.107",
+        "accessKey": null,
+        "cognitoAuthenticationType": null,
+        "cognitoAuthenticationProvider": null,
+        "userArn": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36",
+        "user": null
+      },
+      "resourcePath": "/hello",
+      "httpMethod": "GET",
+      "apiId": "6x5a7qcve7"
+    },
+    "body": null,
+    "isBase64Encoded": false
+  }
