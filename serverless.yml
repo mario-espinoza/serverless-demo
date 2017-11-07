@@ -30,15 +30,15 @@ functions:
     events: 
       - http:
           method: get
-          path: results/{myPlayer}/{enemy}
+          path: results/{player}/{enemy}
           parameters:
             paths:
-                myPlayer: true
+                player: true
                 enemy: true
       - http:
           method: post
-          path: score/{myPlayer}/{enemy}
+          path: score/{player}/{enemy}
           parameters:
             paths:
-                myPlayer: true
+                player: true
                 enemy: true

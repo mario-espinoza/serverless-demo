@@ -28,26 +28,119 @@ module.exports.scores = (event, context, callback) => {
 	return processEvent(event, context, callback);
 };
 
-const eventMap = {
-	start : '',
-	score : '',
-	results : ''
-}
+const startProcessor = (event) => new Promise((resolve, reject) => {
+	
+	let players = getPlayers(event);
+	
+	if (!players) {
+		return reject('missing parameters');
+	}
+
+	let match = {
+		players : players
+	};
+
+	cachedDb.collection('matches').insertOne(match, (err, result) => {
+		if (err) {
+			return reject(err);
+		}
+		resolve(result);
+	});
+});
+
+const getPlayers = (event) => {
+	if (!event.pathParameters) {
+		return ;
+	}
+	let enemy = event.pathParameters.enemy;
+	let player = event.pathParameters.player;
+
+	if (!enemy || !player) {
+		return ;
+	}
+
+	let players = [player,enemy].sort();
+	return players;
+};
+
+const resultsProcessor = (event) => new Promise((resolve, reject) => {
+	
+	let players = getPlayers(event);
+
+	if (!players) {
+		return reject('missing parameters');
+	}
+
+	let filter = {
+		players : {
+			$in : players
+		}
+	};
+
+	cachedDb.collection('matches').findOne(filter, (err, match) => {
+		if (err) {
+			return reject(err);
+		}
+
+		if (!match) {
+			return reject('match not found');
+		}
+		resolve(match);
+	});
+});
+
+const processors = {
+	start: startProcessor,
+	score: '',
+	results: resultsProcessor
+};
+
+const endpoints = {
+	hello: '/hello',
+	start: '/start/{myPlayer}/{enemy}',
+	score: '/score/{myPlayer}/{enemy}',
+	results: '/results/{myPlayer}/{enemy}',
+};
+
+const getProcessor = (event) => {
+	let httpMethod = event.httpMethod;
+	let path = event.path;
+
+	if (path === endpoints.start && httpMethod === 'POST') {
+		return processors.start;
+	}
+
+	if (path === endpoints.score && httpMethod === 'POST') {
+		return processors.score;
+	}
+
+	if (path === endpoints.results && httpMethod === 'GET') {
+		return processors.results;
+	}
+
+	return;
+};
+
+const errorHandler = cb => err => {
+	console.log('=> an error occurred: ', err);
+	cb(err);
+};
 
 function processEvent(event, context, callback) {
 
-	let eventType = event.
-    
+	let processor = getProcessor(event);
+
+	if (!processor) {
+		return errorHandler(callback)('invalid endpoint');
+	}
+
 	connectToDatabase(atlas_connection_uri)
-		.then(db => getTemplate(db))
+		.then(db => db && processor(event)())
 		.then(result => {
 			console.log('query results: ', result);
 			callback(null, result);
 		})
-		.catch(err => {
-			console.log('=> an error occurred: ', err);
-			callback(err);
-		});
+		.catch(errorHandler(callback));
 }
 
 function connectToDatabase(uri) {
