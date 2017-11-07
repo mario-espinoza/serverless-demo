@@ -19,12 +19,18 @@ custom:
 functions:
   hello:
     handler: handler.hello
+  helloHTTP:
+    handler: handler.hello
+    events: 
+      - http:
+          method: get
+          path: hello
   score:
     handler: handler.score
     events: 
       - http:
           method: get
-          path: scores/{myPlayer}/{enemy}
+          path: results/{myPlayer}/{enemy}
           parameters:
             paths:
                 myPlayer: true
