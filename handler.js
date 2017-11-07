@@ -28,6 +28,28 @@ module.exports.scores = (event, context, callback) => {
 	return processEvent(event, context, callback);
 };
 
+const eventMap = {
+	start : '',
+	score : '',
+	results : ''
+}
+
+function processEvent(event, context, callback) {
+
+	let eventType = event.
+    
+	connectToDatabase(atlas_connection_uri)
+		.then(db => getTemplate(db))
+		.then(result => {
+			console.log('query results: ', result);
+			callback(null, result);
+		})
+		.catch(err => {
+			console.log('=> an error occurred: ', err);
+			callback(err);
+		});
+}
+
 function connectToDatabase(uri) {
 
 	if (cachedDb && cachedDb.serverConfig.isConnected()) {
