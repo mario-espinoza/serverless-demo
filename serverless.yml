@@ -37,6 +37,13 @@ functions:
                 enemy: true
       - http:
           method: post
+          path: start/{player}/{enemy}
+          parameters:
+            paths:
+                player: true
+                enemy: true
+      - http:
+          method: post
           path: score/{player}/{enemy}
           parameters:
             paths:
