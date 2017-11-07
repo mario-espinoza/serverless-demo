@@ -1,0 +1,11 @@
+{
+  "name": "serverless-demo",
+  "version": "1.0.0",
+  "description": "Demo for Serverless app",
+  "main": "handler.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "mario@23people.io",
+  "license": "MIT"
+}

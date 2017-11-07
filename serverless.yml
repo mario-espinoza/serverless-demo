@@ -1,0 +1,38 @@
+service: serverless-demo
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: us-west-1
+  stage: ${opt:stage, self:custom.defaultStage}
+  timeout: 5
+  environment:
+    REGION:  us-west-1
+    MONGODB_ATLAS_CLUSTER_URI: "mongodb://${self:custom.MONGODB_ATLAS_USER}:${self:custom.MONGODB_ATLAS_PASSWORD}${self:custom.MONGODB_ATLAS_CLUSTER_URI_PREFFIX}${self:custom.MONGODB_ATLAS_DB_NAME}${self:custom.MONGODB_ATLAS_CLUSTER_URI_SUFFIX}"
+custom:
+  defaultStage: dev
+  MONGODB_ATLAS_DB_NAME: "scores"
+  MONGODB_ATLAS_USER: "admin"
+  MONGODB_ATLAS_PASSWORD: "admin"
+  MONGODB_ATLAS_CLUSTER_URI_PREFFIX: "@demo-cluster-shard-00-00-5vyxo.mongodb.net:27017,demo-cluster-shard-00-01-5vyxo.mongodb.net:27017,demo-cluster-shard-00-02-5vyxo.mongodb.net:27017/"
+  MONGODB_ATLAS_CLUSTER_URI_SUFFIX: "?ssl=true&replicaSet=demo-cluster-shard-0&authSource=admin"
+
+functions:
+  hello:
+    handler: handler.hello
+  score:
+    handler: handler.score
+    events: 
+      - http:
+          method: get
+          path: scores/{myPlayer}/{enemy}
+          parameters:
+            paths:
+                myPlayer: true
+                enemy: true
+      - http:
+          method: post
+          path: score/{myPlayer}/{enemy}
+          parameters:
+            paths:
+                myPlayer: true
+                enemy: true
