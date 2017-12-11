@@ -3,11 +3,48 @@ service: serverless-demo-aws
 provider:
   name: aws
   runtime: nodejs6.10
+  region: us-east-1
+  stage: ${opt:stage, self:custom.defaultStage}
+  timeout: 5
+  environment:
+    MONGODB_ATLAS_CLUSTER_URI: "mongodb://admin:admin@cluster0-shard-00-00-5vyxo.mongodb.net:27017,cluster0-shard-00-01-5vyxo.mongodb.net:27017,cluster0-shard-00-02-5vyxo.mongodb.net:27017/scores?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin"
+custom:
+  defaultStage: dev
 
 functions:
   hello:
     handler: handler.hello
     events:
      - http:
-         path: users/create
+        path: users/create
+        method: get
+  helloHTTP:
+    handler: handler.hello
+    events: 
+     - http:
+        method: get
+        path: hello
+  voteAnonymous:
+    handler: vote.anonymous
+    events:
+     - http:
+        path: vote
+        method: post
+        template:
+          application/json: '{ "candidate" : "$context.candidate" }'
+        
+  vote:
+    handler: vote.candidate
+    events:
+     - http:
+        path: vote/{candidate}
+        method: post
+        parameters:
+          paths:
+            candidate: true
+  results:
+    handler: vote.results
+    events:
+     - http:
+         path: results
          method: get

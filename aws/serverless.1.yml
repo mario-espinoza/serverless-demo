@@ -1,0 +1,33 @@
+service: serverless-demo-aws
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+     - http:
+         path: users/create
+         method: get
+  voteAnonymous:
+    handler: handler.voteAnonymous
+    events:
+     - http:
+         path: vote
+         method: post
+  vote:
+    handler: handler.vote
+    events:
+     - http:
+        path: vote/{candidate}
+        parameters:
+          paths:
+            candidate: true
+  results:
+    handler: handler.results
+    events:
+     - http:
+         path: results
+         method: get
