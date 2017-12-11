@@ -1,5 +1,0 @@
-
-acccesid AKIAJ7VQP5WPTQ22S3OA
-secret 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
-us-east-1
-json
