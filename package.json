@@ -1,0 +1,23 @@
+{
+  "name": "serverless-demo-mario",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "dependencies": {
+    "mongodb": "^2.2.33"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mespinozas/serverless-demo.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mespinozas/serverless-demo/issues"
+  },
+  "homepage": "https://github.com/mespinozas/serverless-demo#readme"
+}
